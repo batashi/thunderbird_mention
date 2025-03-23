@@ -1,0 +1,69 @@
+{
+    "manifest_version": 3,
+    "name": "MT",
+    "description": "Mention feature",
+    "version": "0.1",
+    "author": "Ahmed AlBattashi",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "mt@ahmed.AlBattashi",
+            "strict_min_version": "128.0"
+        }
+    },
+    "permissions": [
+      "accountsFolders",
+      "accountsRead",
+      "activeTab",
+      "addressBooks",
+      "alarms",
+      "browserSettings",
+      "clipboardRead",
+      "clipboardWrite",
+      "compose",
+      "contextualIdentities",
+      "cookies",
+      "dns",
+      "downloads",
+      "downloads.open",
+      "geolocation",
+      "idle",
+      "management",
+      "menus",
+      "menus.overrideContext",
+      "messagesMove",
+      "messagesRead",
+      "nativeMessaging",
+      "notifications",
+      "pkcs11",
+      "privacy",
+      "proxy",
+      "storage",
+      "scripting",
+      "tabHide",
+      "tabs",
+      "theme",
+      "unlimitedStorage",
+      "webNavigation",
+      "webRequest",
+      "webRequestBlocking"
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "action": {
+        "default_popup": "notify/notify.html",
+        "default_title": "@",
+        "default_icon": "images/mention.png"
+    },
+    "commands": {
+        "mention_action": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+2",
+                "linux": "Ctrl+Shift+2"
+            },
+            "description": "Send a 'toggle-feature' event"
+        }
+    }
+}
