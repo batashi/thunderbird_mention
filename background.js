@@ -1,5 +1,7 @@
 console.log("Hello from background.js");
 
+
+
 // Import all functions defined in the messageTools module.
 
 browser.compose.onComposeStateChanged.addListener(async (tab, details) => {
@@ -64,27 +66,55 @@ async function injectIntoContent(tab, info) {
   })
 }
 
-// listen to keystoke
+
+async function loadSpecificScript() {
+  try { 
+    
+    //read this fucntion from compose js file
+    loadContatcts();
+ 
+  } catch (error) {
+    console.error("Error loading specific script:", error);
+  }
+}
+
+
+async function getTabId() {
+  let tabs = await browser.tabs.query({});
+  for (let tab of tabs) {
+    if (tab.active) {  // Example: Get the active tab
+      return tab.id;
+    }
+  }
+  return null; // No active tab found
+}
+
+
+
+// listen to mention action command 
 browser.commands.onCommand.addListener(async (command) => {
+  let tabId = await getTabId();
+
   if (command === "mention_action") {
+
 
     //loading the script only
     const tabs = await browser.tabs.query({ active: true, currentWindow: true });
     const activeTab = tabs[0];
     if (activeTab) {
       try {
-        await browser.scripting.executeScript({
-          target: { tabId: activeTab.id },
-          files: ["compose/compose.js"]
+
+        // Call the function when needed
+        loadSpecificScript();
+        //not executed need to check !! 
+
+        let details = await browser.compose.getComposeDetails(activeTab.id);
+       
+        await browser.compose.setComposeDetails(activeTab.id, {
+          body: details.body + "<h2 style='color:red;'>@ List</h2>"
         });
 
-            let details = await browser.compose.getComposeDetails(activeTab.id);
-            
-            await browser.compose.setComposeDetails(activeTab.id, {
-              body: details.body + "<h2 style='color:red;'>List contactss</h2>"
-            });
 
-        
         console.log("Script injected successfully");
       } catch (error) {
         console.error("Failed to inject script:", error);
@@ -92,11 +122,11 @@ browser.commands.onCommand.addListener(async (command) => {
     }
 
 
-      browser.scripting.executeScript({
-        target: { tabId: tab.id },
-        files: ["compose/compose.js"]
-      });
-    }
+    browser.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ["compose/compose.js"]
+    });
+  }
 });
 
 
