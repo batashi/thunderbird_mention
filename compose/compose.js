@@ -1,4 +1,12 @@
 console.log("compose/compose.js loaded");
+
+
+
+// how to load the ical.js library 
+import ICAL from '../lib/ical.js';
+
+console.log(ICAL);
+
 browser.runtime.onMessage.addListener(async (message, sender) => {
   if (message.action === "insertHTML") {
     let details = await browser.compose.getComposeDetails(sender.tab.id);
@@ -12,27 +20,26 @@ browser.runtime.onMessage.addListener(async (message, sender) => {
 
 
 
-
-
-async function loadContatcts() {
+export async function loadContatcts() {
   let list = await browser.addressBooks.list();
 
 
   console.log("load Contatcts");
   let results = await browser.addressBooks.contacts.query({
-    searchString: "ab",
+    searchString: "a",
   });
   results[0];
   let { properties } = results[0].vCard;
-  console.log(properties); 
-  
-  if (results[0] == "vcard") {
-    let email = jCard.find(e => e[0] == "email");
-    console.log(email);
+
+  for (let index = 0; index < results.length; index++) {
+    const element = results[index];
+
+  let x = ICAL.parse(results[0].vCard);
+  console.log(x);
+
   }
-  //console.log(results[0].vCard);
-
-
+   
+ 
 }
 
-loadContatcts();
+ 

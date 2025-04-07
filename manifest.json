@@ -53,11 +53,8 @@
         "webRequestBlocking"
     ],
     "background": {
-        "scripts": [
-            "background.js",
-            "compose/compose.js",
-            "lib/ical.min.js"
-        ]
+        "page": "background.html"
+        
     },
     "action": {
         "default_popup": "notify/notify.html",
