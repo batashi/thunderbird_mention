@@ -1,0 +1,11 @@
+
+#abs1 {
+    
+    position: absolute;
+    width: 150px;
+    height: 350px;
+    top: 10px;
+    left: 10px;
+    border: 1px dashed #900;
+    background-color: #fdd;
+  }
