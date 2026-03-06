@@ -1,5 +1,0 @@
-{
-  "devDependencies": {
-    "@types/thunderbird-webext-browser": "^127.0.0"
-  }
-}

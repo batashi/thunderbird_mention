@@ -1,10 +1,11 @@
-await browser.composeScripts.register({
-  js: [
-    { file: "tm.js" }
-  ]
-});
+import { parse5322 } from './modules/email-addresses.js';
 
-console.log(browser.runtime.getManifest());
+// A restarting background will try to re-register the compose scripts, and fail.
+// Catch the error.
+browser.scripting.compose.registerScripts([{
+  id: "compose-script-example-1",
+  js: ["compose.js"]
+}]).catch(console.info);
 
 /**
  * Handles commands received from the compose script, to send make the
@@ -15,8 +16,14 @@ async function doHandleCommand (message, sender) {
   const { tab: { id: tabId } } = sender;
   switch(command) {
     case "getToAddress":
-       
-      return "to addresss @ omana.com";
+      let details = await browser.compose.getComposeDetails(tabId);
+      let rv;
+      try {
+        rv = details.to.map(parse5322.parseOneAddress);
+      } catch (e) {
+        console.error(e);
+      }
+      return rv;
       break;
   }
 }
@@ -26,6 +33,7 @@ async function doHandleCommand (message, sender) {
  * is set to "command". Ignore all other requests.
  */
 browser.runtime.onMessage.addListener((message, sender) => {
+  if (message && message.hasOwnProperty("command")) {
     return doHandleCommand(message, sender);
-  
+  }
 });
