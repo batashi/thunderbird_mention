@@ -37,3 +37,5 @@ browser.runtime.onMessage.addListener((message, sender) => {
     return doHandleCommand(message, sender);
   }
 });
+
+
