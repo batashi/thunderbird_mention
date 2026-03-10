@@ -65,6 +65,7 @@ function capitalize(string) {
 async function main() {
     let to = await browser.runtime.sendMessage({ command: "getToAddress" });
     await updateMessage(to);
+    console.info("Message updated");
 }
 
 main();
